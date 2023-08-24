@@ -1,9 +1,8 @@
  import React, { useState } from "react";
  import { Link } from "react-router-dom";
 
- const Header = ({ handleSearch }) => {
-   const userData = JSON.parse(localStorage.getItem("user"));
-   console.log("userData:", userData);
+ const Header = ({ handleSearch, cartItems }) => {
+    
    const [searchTerm, setSearchTerm] = useState("");
 
    const handleChange = (e) => {
@@ -16,24 +15,24 @@
    };
 
    return (
-     <header>
-       {/* <div className="profile-image">
-         {userData ? (
-           <img src={userData.profileImage} alt="Profile" />
-         ) : (
-           "Profile Image"
-         )}
-       </div> */}
-       <nav>
-         <ul>
-           <li>
-             <Link to="/">Home</Link>
+     <header className="header">
+       {/* Navigation links */}
+       <nav className="navigation">
+         <ul className="nav-list">
+           <li className="nav-item">
+             <Link to="/" className="nav-link">
+               Home
+             </Link>
            </li>
-           <li>
-             <Link to="/cart">Cart</Link>
+           <li className="nav-item">
+             <Link to="/cart" className="nav-link">
+               Cart (
+               {cartItems.reduce((total, item) => total + item.quantity, 0)})
+             </Link>
            </li>
          </ul>
        </nav>
+       {/* Search box */}
        <div className="search-box">
          <input
            type="text"
@@ -45,10 +44,14 @@
            Search
          </button>
        </div>
-
+       {/* Authentication buttons */}
        <div className="auth-buttons">
-         <Link to="/signin">Sign In</Link>
-         <Link to="/signup">Sign Up</Link>
+         <Link to="/signin" className="auth-link">
+           Sign In
+         </Link>
+         <Link to="/signup" className="auth-link">
+           Sign Up
+         </Link>
        </div>
      </header>
    );

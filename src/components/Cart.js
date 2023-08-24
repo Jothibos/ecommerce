@@ -63,27 +63,23 @@
          <p>Your cart is empty.</p>
        ) : (
          <>
-           <ul>
+           <ul className="cart-item-list">
              {cartItems.map((item) => (
-               <li key={item.id}>
-                 <div className="cart-item">
+               <li key={item.id} className="cart-item">
+                 <div className="cart-item-details">
                    <img src={item.image} alt={item.name} />
-                   <div className="item-details">
-                     <p>{item.name}</p>
-                     <p>Price: ₹{item.price}</p>
-                     <p>Quantity: {item.quantity}</p>
-                     <button onClick={() => removeFromCart(item)}>
-                       Remove
-                     </button>
-                   </div>
-                   <div className="item-quantity">
-                     <button onClick={() => updateQuantity(item, "increase")}>
-                       +
-                     </button>
-                     <button onClick={() => updateQuantity(item, "decrease")}>
-                       -
-                     </button>
-                   </div>
+                   <p>{item.name}</p>
+                   <p>Price: ₹{item.price}</p>
+                   <p>Quantity: {item.quantity}</p>
+                   <button onClick={() => removeFromCart(item)}>Remove</button>
+                 </div>
+                 <div className="cart-item-quantity">
+                   <button onClick={() => updateQuantity(item, "increase")}>
+                     +
+                   </button>
+                   <button onClick={() => updateQuantity(item, "decrease")}>
+                     -
+                   </button>
                  </div>
                </li>
              ))}

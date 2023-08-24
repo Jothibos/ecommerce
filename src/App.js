@@ -7,6 +7,8 @@
  import SignUpForm from "./components/SignUpForm";
  import SignInForm from "./components/SignInForm";
  import productsData from "./data/products";
+ import { ToastContainer, toast } from "react-toastify"; // Add 'toast' import
+ import "react-toastify/dist/ReactToastify.css";
  import "./App.css";
 
  function App() {
@@ -27,6 +29,11 @@
      } else {
        setCartItems([...cartItems, { ...product, quantity: 1 }]);
      }
+
+     // Show notification when item is added to cart
+     toast.success(`${product.name} added to cart`, {
+       position: toast.POSITION.BOTTOM_RIGHT,
+     });
    };
 
    const removeFromCart = (product) => {
@@ -58,7 +65,7 @@
    return (
      <Router>
        <div className="App">
-         <Header handleSearch={handleSearch} />
+         <Header handleSearch={handleSearch} cartItems={cartItems} />
          <Routes>
            <Route
              path="/"
@@ -81,6 +88,7 @@
          </Routes>
        </div>
        <Footer />
+       <ToastContainer />
      </Router>
    );
  }

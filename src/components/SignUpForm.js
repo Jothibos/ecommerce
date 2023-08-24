@@ -7,18 +7,24 @@
  const SignUpForm = () => {
    const navigate = useNavigate();
    const [errorMessage, setErrorMessage] = useState("");
+   const [password, setPassword] = useState("");
+   const [confirmPassword, setConfirmPassword] = useState("");
 
    const handleSignUp = async (event) => {
      event.preventDefault();
 
      const username = event.target.elements.username.value;
      const email = event.target.elements.email.value;
-     const password = event.target.elements.password.value;
      const phone = event.target.elements.phone.value;
      const address = event.target.elements.address.value;
 
      if (!username || !email || !password || !phone || !address) {
        setErrorMessage("Please fill in all the required fields.");
+       return;
+     }
+
+     if (password !== confirmPassword) {
+       setErrorMessage("Passwords do not match.");
        return;
      }
 
@@ -108,6 +114,19 @@
              type="password"
              name="password"
              placeholder="Password"
+             value={password}
+             onChange={(e) => setPassword(e.target.value)}
+           />
+         </Form.Group>
+         <Form.Group controlId="confirmPassword">
+           <Form.Label style={labelStyles}>Confirm Password</Form.Label>
+           <Form.Control
+             style={inputStyles}
+             type="password"
+             name="confirmPassword"
+             placeholder="Confirm Password"
+             value={confirmPassword}
+             onChange={(e) => setConfirmPassword(e.target.value)}
            />
          </Form.Group>
          <Form.Group controlId="phone">

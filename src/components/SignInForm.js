@@ -4,33 +4,37 @@
 
  const SignInForm = () => {
    const navigate = useNavigate();
+   const [errorMessage, setErrorMessage] = useState("");
    const [email, setEmail] = useState("");
    const [password, setPassword] = useState("");
-   const [errorMessage, setErrorMessage] = useState("");
+
+   const usersData = JSON.parse(localStorage.getItem("usersData")) || [];
 
    const handleSignIn = (event) => {
      event.preventDefault();
 
-     if (!email || !password) {
-       setErrorMessage("Please enter your email and password.");
-       return;
+     // Check if the entered credentials match any user's data
+     const validUser = usersData.find(
+       (user) => user.email === email && user.password === password
+     );
+
+     if (validUser) {
+       alert("Sign In successful!");
+
+       // Simulate the user data after successful login
+       const userData = {
+         username: validUser.username,
+         profileImage: validUser.profileImage,
+       };
+
+       // Save user data to local storage or state management (optional)
+       localStorage.setItem("user", JSON.stringify(userData));
+
+       // Redirect to the home page after successful sign-in
+       navigate("/");
+     } else {
+       setErrorMessage("Invalid credentials. Please try again.");
      }
-
-     // Perform form validation and authentication process here
-     // For simplicity, we'll just show an alert message
-     alert("Sign In successful!");
-
-     // Simulate the user data after successful login
-     const userData = {
-       username: " ",
-       profileImage: " ",
-     };
-
-     // Save user data to local storage or state management (optional)
-     localStorage.setItem("user", JSON.stringify(userData));
-
-     // Redirect to the home page after successful sign-in
-     navigate("/");
    };
 
    const formStyles = {
@@ -79,6 +83,7 @@
            <Form.Control
              style={inputStyles}
              type="email"
+             name="email"
              placeholder="Email ID"
              value={email}
              onChange={(e) => setEmail(e.target.value)}
@@ -89,6 +94,7 @@
            <Form.Control
              style={inputStyles}
              type="password"
+             name="password"
              placeholder="Password"
              value={password}
              onChange={(e) => setPassword(e.target.value)}
