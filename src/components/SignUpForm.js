@@ -1,6 +1,6 @@
  import React, { useState } from "react";
  import { useNavigate } from "react-router-dom";
- import { db } from "../firebase";
+ import { db, storage } from "../firebase"; // Make sure to import Firebase storage
  import { collection, addDoc } from "firebase/firestore";
  import { Form, Button, Alert } from "react-bootstrap";
 
@@ -9,6 +9,12 @@
    const [errorMessage, setErrorMessage] = useState("");
    const [password, setPassword] = useState("");
    const [confirmPassword, setConfirmPassword] = useState("");
+   const [profilePicture, setProfilePicture] = useState(null);
+
+   const handleProfilePictureChange = (event) => {
+     const file = event.target.files[0];
+     setProfilePicture(file);
+   };
 
    const handleSignUp = async (event) => {
      event.preventDefault();
@@ -37,6 +43,15 @@
        });
 
        console.log("Document written with ID: ", docRef.id);
+
+       // Upload profile picture if selected
+       if (profilePicture) {
+         const storageRef = storage.ref();
+         const profilePictureRef = storageRef.child(
+           `profilePictures/${docRef.id}`
+         );
+         await profilePictureRef.put(profilePicture);
+       }
 
        alert("Account created successfully!");
        navigate("/signin");
@@ -145,6 +160,14 @@
              type="text"
              name="address"
              placeholder="Address"
+           />
+         </Form.Group>
+         <Form.Group controlId="profilePicture">
+           <Form.Label style={labelStyles}>Profile Picture</Form.Label>
+           <Form.Control
+             type="file"
+             accept="image/*"
+             onChange={handleProfilePictureChange}
            />
          </Form.Group>
          <Button style={buttonStyles} variant="primary" type="submit">

@@ -1,5 +1,5 @@
  import React, { useState } from "react";
- import { useNavigate } from "react-router-dom";
+ import { useNavigate, Link } from "react-router-dom";
  import { Form, Button, Alert } from "react-bootstrap";
 
  const SignInForm = () => {
@@ -13,27 +13,27 @@
    const handleSignIn = (event) => {
      event.preventDefault();
 
+     // Trim the input values to remove whitespace
+     const trimmedEmail = email.trim();
+     const trimmedPassword = password.trim();
+
      // Check if the entered credentials match any user's data
      const validUser = usersData.find(
-       (user) => user.email === email && user.password === password
+       (user) =>
+         user.email === trimmedEmail && user.password === trimmedPassword
      );
 
      if (validUser) {
        alert("Sign In successful!");
 
        // Simulate the user data after successful login
-       const userData = {
-         username: validUser.username,
-         profileImage: validUser.profileImage,
-       };
+        
 
-       // Save user data to local storage or state management (optional)
-       localStorage.setItem("user", JSON.stringify(userData));
-
+        
        // Redirect to the home page after successful sign-in
        navigate("/");
      } else {
-       setErrorMessage("Invalid credentials. Please try again.");
+       setErrorMessage(" fill out email or password. Please try again.");
      }
    };
 
@@ -109,6 +109,11 @@
            {errorMessage}
          </Alert>
        )}
+       <div style={{ marginTop: "20px", textAlign: "center" }}>
+         user credentials <Link to="/">Sign in</Link> 
+         <br/>
+         Don't have an account? <Link to="/signup">Sign Up</Link>
+       </div>
      </div>
    );
  };
